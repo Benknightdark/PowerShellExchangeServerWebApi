@@ -12,9 +12,9 @@ namespace WebAPI.Controllers
 {
     [RoutePrefix("Account")]
 
-    public class LoginController : ApiController
+    public class AccountController : ApiController
     {
-        public LoginController()
+        public AccountController()
         {
             aOpenRunSpace = new OpenRunSpace();
             aAccountHelpers = new AccountHelpers();

@@ -35,8 +35,6 @@ namespace WebAPI.Controllers
         public IHttpActionResult GetMailBoxFolder()
         {
             Runspace remoteRunspace = null;
-
-            GetUserData();
             try
             {
                 aOpenRunSpace.Open(GetUserData().AccountName, GetUserData().Password, ref remoteRunspace);
