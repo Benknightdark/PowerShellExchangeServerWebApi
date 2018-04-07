@@ -36,6 +36,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -250,11 +252,11 @@
     <Compile Include="Controllers\MailBoxFolderController.cs" />
     <Compile Include="Controllers\MailBoxFolderPermisionController.cs" />
     <Compile Include="Controllers\SubMailBoxFolderController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\AccountHelpers.cs" />
+    <Compile Include="Helpers\AzureADController.cs" />
     <Compile Include="Helpers\AzureADHelpers.cs" />
     <Compile Include="Helpers\CommomHelpers.cs" />
     <Compile Include="Helpers\MailBoxFolderHelpers.cs" />
