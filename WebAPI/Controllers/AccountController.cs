@@ -7,6 +7,8 @@ using System.Management.Automation.Runspaces;
 using System.Net;
 using System.Text;
 using System.Web.Http;
+using System.Management.Automation;
+using System.Collections.ObjectModel;
 
 namespace WebAPI.Controllers
 {
@@ -24,7 +26,7 @@ namespace WebAPI.Controllers
         private OpenRunSpace aOpenRunSpace;
         private AccountHelpers aAccountHelpers;
         private CommomHelpers aCommomHelpers;
-
+      
         /// <summary>
         /// 回傳使用者登入授權Token
         /// </summary>

@@ -1,6 +1,5 @@
 ﻿using WebAPI.Attributes;
 using WebAPI.Helpers;
-using Swashbuckle.Swagger.Annotations;
 using System;
 using System.Management.Automation.Runspaces;
 using System.Net;

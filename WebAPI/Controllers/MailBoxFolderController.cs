@@ -1,12 +1,13 @@
 ﻿using WebAPI.Attributes;
 using WebAPI.Helpers;
-using Swashbuckle.Swagger.Annotations;
 using System;
 using System.Management.Automation.Runspaces;
 using System.Net;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Xml.Linq;
+using System.Management.Automation;
+using System.Collections.ObjectModel;
 
 namespace WebAPI.Controllers
 {
@@ -23,7 +24,24 @@ namespace WebAPI.Controllers
         private OpenRunSpace aOpenRunSpace;
         private MailBoxFolderHelpers aMailBoxFolderHelpers;
         private CommomHelpers aCommomHelpers;
+        [HttpGet]
+        [Route("userlist")]
+        public IHttpActionResult GetUserList()
+        {
+            using (PowerShell PowerShellInstance = PowerShell.Create())
+            {
+                // use "AddScript" to add the contents of a script file to the end of the execution pipeline.
+                // use "AddCommand" to add individual commands/cmdlets to the end of the execution pipeline.
+                PowerShellInstance.AddScript("param($param1) $d = get-date; $s = 'test string value'; " +
+                        "$d; $s; $param1; get-service");
 
+                // use "AddParameter" to add a single parameter to the last command/script on the pipeline.
+                PowerShellInstance.AddParameter("param1", "parameter 1 value!");
+                Collection<PSObject> PSOutput = PowerShellInstance.Invoke();
+                return Ok(PSOutput);
+            }
+
+        }
         /// <summary>
         /// 郵件資料夾
         /// </summary>
