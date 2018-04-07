@@ -256,7 +256,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\AccountHelpers.cs" />
-    <Compile Include="Helpers\AzureADController.cs" />
+    <Compile Include="Controllers\AzureADController.cs" />
     <Compile Include="Helpers\AzureADHelpers.cs" />
     <Compile Include="Helpers\CommomHelpers.cs" />
     <Compile Include="Helpers\MailBoxFolderHelpers.cs" />

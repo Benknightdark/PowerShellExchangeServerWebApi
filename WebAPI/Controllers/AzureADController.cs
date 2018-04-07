@@ -6,10 +6,10 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using WebAPI.Attributes;
-using WebAPI.Controllers;
+using WebAPI.Helpers;
 using WebAPI.Models;
 
-namespace WebAPI.Helpers
+namespace WebAPI.Controllers
 {
     [RoutePrefix("AzureAD")]
     public class AzureADController : BaseController
