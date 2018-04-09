@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using WebAPI.Attributes;
@@ -16,13 +13,16 @@ namespace WebAPI.Controllers
     {
         public AzureADController()
         {
-
             aCommomHelpers = new CommomHelpers();
             aAzureADHelpers = new AzureADHelpers();
         }
         public CommomHelpers aCommomHelpers;
         public AzureADHelpers aAzureADHelpers;
 
+        /// <summary>
+        /// 回傳azure ad 所有使用者
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("Users")]
         [EnableCors(origins: "*", headers: "*", methods: "*")]
@@ -31,16 +31,18 @@ namespace WebAPI.Controllers
         {
             try
             {
-                return Ok(aAzureADHelpers.Users(GetUserData()));
-                //
+                var AzureADUserData = aAzureADHelpers.AzureADUsers(GetUserData())
+                    .Select(a => new
+                    {
+                        DisplayName = a.Properties["DisplayName"].Value.ToString(),
+                        UserPrincipalName = a.Properties["UserPrincipalName"].Value.ToString()
+                    });
+                return Ok(AzureADUserData);
             }
             catch (Exception e)
             {
-
                 return BadRequest(e.Message);
             }
-            
         }
-
     }
 }

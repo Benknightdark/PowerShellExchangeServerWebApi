@@ -13,8 +13,12 @@ namespace WebAPI.Helpers
         {
         }
 
-        public AccountModel UserData;
-        public IEnumerable<PSObject> Users(AccountModel model)
+        /// <summary>
+        /// 回傳azure ad 所有使用者
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public IEnumerable<PSObject> AzureADUsers(AccountModel model)//
         {
             string GetAzureADUsersScript = ConnectAzureAD(model)+ "  Get-AzureADUser";
             return GetPSresults(GetAzureADUsersScript);
@@ -22,13 +26,9 @@ namespace WebAPI.Helpers
         private IEnumerable<PSObject> GetPSresults(string scriptText)
         {
             Runspace runspace = RunspaceFactory.CreateRunspace();
-
             runspace.Open();
-
             Pipeline pipeline = runspace.CreatePipeline();
-
             pipeline.Commands.AddScript(scriptText);
-
             Collection<PSObject> results = pipeline.Invoke();
             runspace.Close();
             return results.Skip(1);

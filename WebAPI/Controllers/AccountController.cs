@@ -1,19 +1,16 @@
 ﻿using Jose;
-using WebAPI.Helpers;
-using WebAPI.Models;
 using System;
 using System.Configuration;
 using System.Management.Automation.Runspaces;
 using System.Net;
 using System.Text;
 using System.Web.Http;
-using System.Management.Automation;
-using System.Collections.ObjectModel;
+using WebAPI.Helpers;
+using WebAPI.Models;
 
 namespace WebAPI.Controllers
 {
     [RoutePrefix("Account")]
-
     public class AccountController : ApiController
     {
         public AccountController()
@@ -26,14 +23,14 @@ namespace WebAPI.Controllers
         private OpenRunSpace aOpenRunSpace;
         private AccountHelpers aAccountHelpers;
         private CommomHelpers aCommomHelpers;
-      
+
         /// <summary>
         /// 回傳使用者登入授權Token
         /// </summary>
         /// <param name="loginData"></param>
         /// <returns></returns>
         [Route("")]
-        public IHttpActionResult Post([FromBody]AccountModel loginData) //UserLoginInfo
+        public IHttpActionResult Post([FromBody]AccountModel loginData) 
         {
             Runspace remoteRunspace = null;
             try
@@ -47,15 +44,20 @@ namespace WebAPI.Controllers
                     return Content(HttpStatusCode.BadRequest, ErrorMsgs);
                 }
                 var secret = ConfigurationManager.AppSettings["JWTKey"].ToString();
-                
+
                 var payload = new
                 {
                     loginData = loginData
                 };
 
                 var Token = Jose.JWT.Encode(payload, Encoding.UTF8.GetBytes(secret), JwsAlgorithm.HS256);
-                return Ok(Token);
-               
+                return Ok(
+                    new
+                    {
+                        AccountName = loginData.AccountName,
+                        Token = Token
+                    }
+                    );
             }
             catch (Exception e)
             {

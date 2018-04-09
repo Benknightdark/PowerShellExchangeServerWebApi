@@ -11,8 +11,11 @@ namespace WebAPI.Controllers
 {
     public class BaseController : ApiController
     {
+        public BaseController()
+        {
+        }
         [NonAction]
-        public AccountModel GetUserData()
+        public  AccountModel GetUserData()
         {
             var secret = ConfigurationManager.AppSettings["JWTKey"].ToString();
             var jwtObject = Jose.JWT.Decode(Request.Headers.Authorization.Parameter,Encoding.UTF8.GetBytes(secret),JwsAlgorithm.HS256);

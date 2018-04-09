@@ -9,6 +9,11 @@ namespace WebAPI.Helpers
 {
     public class CommomHelpers
     {
+        /// <summary>
+        /// 回傳Powershell Exception
+        /// </summary>
+        /// <param name="ResultsStreamsError"></param>
+        /// <returns></returns>
         public List<PowerShellInvokErrorModel> ReturnPowerShellInvokeErrors(PSDataCollection<ErrorRecord>  ResultsStreamsError)
         {
             PSDataCollection<ErrorRecord> errors = ResultsStreamsError;// results.Streams.Error;
