@@ -20,9 +20,15 @@ namespace WebAPI.Helpers
         /// <returns></returns>
         public IEnumerable<PSObject> AzureADUsers(AccountModel model)//
         {
-            string GetAzureADUsersScript = ConnectAzureAD(model)+ "  Get-AzureADUser";
+            string GetAzureADUsersScript = ConnectAzureAD(model)+ "Get-AzureADUser";
             return GetPSresults(GetAzureADUsersScript);
         }
+
+        /// <summary>
+        /// 取得PowerShell所回傳的結果
+        /// </summary>
+        /// <param name="scriptText"></param>
+        /// <returns></returns>
         private IEnumerable<PSObject> GetPSresults(string scriptText)
         {
             Runspace runspace = RunspaceFactory.CreateRunspace();
@@ -34,6 +40,11 @@ namespace WebAPI.Helpers
             return results.Skip(1);
         }
 
+        /// <summary>
+        /// 連線至Azure AD
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         private string ConnectAzureAD(AccountModel model)
         {
             string ConnectScript =(string.Format(@"

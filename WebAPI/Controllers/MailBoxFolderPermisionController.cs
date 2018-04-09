@@ -30,7 +30,7 @@ namespace WebAPI.Controllers
         private CommomHelpers aCommomHelpers;
 
         /// <summary>
-        /// 資料夾權限
+        /// 回傳資料夾權限
         /// </summary>
         /// <param name="Name"></param>
         /// <returns></returns>
@@ -86,11 +86,28 @@ namespace WebAPI.Controllers
             try
             {
                 aOpenRunSpace.Open(GetUserData().AccountName, GetUserData().Password, ref remoteRunspace);
+                //取出此資料夾現有的權限資料
+                var aResults = aMailBoxFolderPermissionHelpers.PSmailBoxFolderPermission(GetUserData().AccountName + ":\\" + Model.FirstOrDefault().FolderPath, ref remoteRunspace);
+                var RootFolderPermissionResults = aMailBoxFolderPermissionHelpers.RootFolderPermissionResults(aResults.Invoke());
+                var aErrorMsgs = aCommomHelpers.ReturnPowerShellInvokeErrors(aResults.Streams.Error);
+                if (aErrorMsgs != null)
+                {
+                    return Content(HttpStatusCode.BadRequest, aErrorMsgs);
+                }
+                //加入或修改此資料夾的權限資料
                 foreach (var m in Model)
                 {
                     if (m.AccessRights.Length > 0)
                     {
-                        var results = aMailBoxFolderPermissionHelpers.AddMailBoxFolderPermission(GetUserData().AccountName + ":\\" + m.FolderPath, m.UserPrincipalName, m.AccessRights, ref remoteRunspace);
+                        PowerShell results = null;
+                        if (RootFolderPermissionResults.Where(a => a.UserPrincipalName == m.UserPrincipalName).Any())
+                        {
+                            results = aMailBoxFolderPermissionHelpers.SetMailBoxFolderPermission(GetUserData().AccountName + ":\\" + m.FolderPath, m.UserPrincipalName, m.AccessRights, ref remoteRunspace);
+                        }
+                        else
+                        {
+                            results = aMailBoxFolderPermissionHelpers.AddMailBoxFolderPermission(GetUserData().AccountName + ":\\" + m.FolderPath, m.UserPrincipalName, m.AccessRights, ref remoteRunspace);
+                        }
                         results.Invoke();
                         var ErrorMsgs = aCommomHelpers.ReturnPowerShellInvokeErrors(results.Streams.Error);
                         if (ErrorMsgs != null)
@@ -242,14 +259,7 @@ namespace WebAPI.Controllers
                         {
                             results = aMailBoxFolderPermissionHelpers.AddMailBoxFolderPermission(GetUserData().AccountName+":\\" + aFolderPath, m.UserPrincipalName, m.AccessRights, ref remoteRunspace);
                         }
-                        results.Invoke();
-                        //var ErrorMsgs = aCommomHelpers.ReturnPowerShellInvokeErrors(results.Streams.Error);
-                        //if (ErrorMsgs != null)
-                        //{
-                        //    remoteRunspace.Close();
-                        //    remoteRunspace.Dispose();
-                        //    return;
-                        //}
+                        results.Invoke();                      
                         results.Commands.Clear();
                     }
                 }
